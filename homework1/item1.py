@@ -1,5 +1,5 @@
 import pandas as pd
-import numpy as np
+import seaborn
 import matplotlib.pyplot as plt
 
 """
@@ -8,10 +8,13 @@ Item #01: Analise monovariada global dos preditores
 - Calcular media, desvio padrao e assimetria
 """
 
+# setando estilo e outras configs
+seaborn.set()
+
 # paths e arquivos
-figpath = "figures/item1/"
 dataset = "datasets/glass.dat"
-resfile = "results/item1.dat"
+figpath = "figures/item1/"
+result_file = "results/item1.dat"
 
 # carregando dados e limpando coluna id (dencessaria)
 df = pd.read_csv(dataset)
@@ -30,7 +33,7 @@ monovariate = pd.DataFrame(columns=columns)
 for p in predictors:
 	fig = plt.figure()
 	plt.hist(df[p], bins=5)
-	plt.title("Preditor {}".format(p))
+	plt.title("Analise monovariada: preditor {}".format(p))
 	plt.grid(b=True)
 	fig.savefig("{}hist_p-{}.png".format(figpath, p))
 	plt.close(fig)
@@ -46,6 +49,6 @@ for p in predictors:
 	print("Analise global do preditor {} OK".format(p))
 
 # salva resultados em arquivo
-monovariate.to_csv(resfile, index=False)
+monovariate.to_csv(result_file, index=False)
 
 

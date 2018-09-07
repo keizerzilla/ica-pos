@@ -1,0 +1,15 @@
+> falar do dados
+  -- definicao
+  -- fonte (site do uci)
+  -- preparacao do arquivo (mudanca de nome da coluna classe, mostra imagem)
+  -- formato (tidy data: https://en.wikipedia.org/wiki/Tidy_data)
+
+> definir "analise exploratoria de dados" (ou EDA no ingles)
+
+Análise Exploratória de Dados (AED) é o processo que permite revelar padrões, relacionamentos e anomalias nos dados, permitindo traçar planos e ações nas etapas de investigação subsequentes.
+
+> falar de pre-processamento
+
+> listar e definir matematicamente as ferramentas de analise (media, variancia, assimetria)
+
+ 

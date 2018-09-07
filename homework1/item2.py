@@ -1,5 +1,5 @@
 import pandas as pd
-import numpy as np
+import seaborn
 import matplotlib.pyplot as plt
 
 """
@@ -8,9 +8,12 @@ Item #02: Analise monovariada por classe dos preditores
 - Calcular media, desvio padrao e assimetria
 """
 
+# setando estilo e outras configs
+seaborn.set()
+
 # paths e arquivos
-figpath = "figures/item2/"
 dataset = "datasets/glass.dat"
+figpath = "figures/item2/"
 result_file = "results/item2.dat"
 samplecount_file = "results/samples_per_class.dat"
 
@@ -43,7 +46,7 @@ for c in classes:
 	for p in predictors:
 		fig = plt.figure()
 		plt.hist(col[p], bins=5)
-		plt.title("Preditor {}".format(p))
+		plt.title("classe {} - preditor {}".format(c, p))
 		plt.grid(b=True)
 		fig.savefig("{}hist_class-{}_p-{}.png".format(figpath, c, p))
 		plt.close(fig)
