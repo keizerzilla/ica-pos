@@ -1,11 +1,11 @@
-import pandas as pd
 import seaborn
+import pandas as pd
 import matplotlib.pyplot as plt
 
 """
-Item #02: Analise monovariada por classe dos preditores
-- Plotar histogramas
-- Calcular media, desvio padrao e assimetria
+Item #02: Análise monovariada por classe dos preditores
+- plotar histogramas
+- calcular média, desvio padrão e assimetria
 """
 
 # setando estilo e outras configs
@@ -59,7 +59,7 @@ for c in classes:
 		new_entry = pd.DataFrame([[c, p, mean, std, var, skewness]], columns=monoclass_header)
 		monoclass = monoclass.append(new_entry)
 		
-		print("Analise do preditor {} da classe {} OK".format(p, c))
+		print("Análise do preditor {} da classe {} OK".format(p, c))
 	
 # salva resultados em arquivo
 monoclass.to_csv(result_file, index=False)

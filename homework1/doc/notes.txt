@@ -12,4 +12,6 @@ Análise Exploratória de Dados (AED) é o processo que permite revelar padrões
 
 > listar e definir matematicamente as ferramentas de analise (media, variancia, assimetria)
 
- 
+> relacionamento entre pares de preditores e outliers
+
+[Ca, Ri] possuem a mais correlação positiva entre todos os pares, com rho=0.8. [Al, Ba] demonstram alguma correlação com um valor de rho=0.5. [Me,Ba] e [Ri,Si] possuem a maior correlão negativa do conjunto com rho=-0.5.

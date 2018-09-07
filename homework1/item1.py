@@ -1,11 +1,11 @@
-import pandas as pd
 import seaborn
+import pandas as pd
 import matplotlib.pyplot as plt
 
 """
-Item #01: Analise monovariada global dos preditores
-- Plotar histogramas
-- Calcular media, desvio padrao e assimetria
+Item #01: Análise monovariada global dos preditores
+- plotar histogramas
+- calcular média, desvio padrão e assimetria
 """
 
 # setando estilo e outras configs
@@ -33,7 +33,7 @@ monovariate = pd.DataFrame(columns=columns)
 for p in predictors:
 	fig = plt.figure()
 	plt.hist(df[p], bins=5)
-	plt.title("Analise monovariada: preditor {}".format(p))
+	plt.title("Análise monovariada: preditor {}".format(p))
 	plt.grid(b=True)
 	fig.savefig("{}hist_p-{}.png".format(figpath, p))
 	plt.close(fig)
@@ -46,7 +46,7 @@ for p in predictors:
 	new_entry = pd.DataFrame([[p, mean, std, var, skewness]], columns=columns)
 	monovariate = monovariate.append(new_entry)
 	
-	print("Analise global do preditor {} OK".format(p))
+	print("Análise global do preditor {} OK".format(p))
 
 # salva resultados em arquivo
 monovariate.to_csv(result_file, index=False)
