@@ -4,28 +4,31 @@ import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import scale
 
+"""
+Item #01: Analise monovariada global dos preditores
+- Plotar histogramas
+- Calcular media, desvio padrao e assimetria
+"""
+
 # paths e arquivos
-figpath = "figures/"
+figpath = "figures/item1/"
 dataset = "datasets/glass.dat"
-resfile = "analyzers.dat"
+resfile = "item1.dat"
 
 # carregando dados e limpando coluna id (dencessaria)
 df = pd.read_csv(dataset)
 df = df.drop(["id"], axis=1)
 
 # lista de preditores (exclui-se a coluna da classe)
-predictors = list(df.drop(["class"], axis=1).columns.values)
+predictors = list(df.drop(["class"], axis=1))
 
 # PCA
-X = np.array(df.drop(["class"], axis=1))
-X = scale(X, axis=1)
-pca = PCA()
-pca.fit(X)
-print(pca.explained_variance_ratio_)
-print(np.sum(pca.explained_variance_ratio_))
-plt.bar(range(1,10), pca.explained_variance_ratio_)
-plt.show()
-exit()
+#X = np.array(df.drop(["class"], axis=1))
+#X = scale(X, axis=1)
+#pca = PCA()
+#pca.fit(X)
+#print(pca.explained_variance_ratio_)
+#print(np.sum(pca.explained_variance_ratio_))
 
 # analise monovariada
 # - histograma
@@ -39,7 +42,7 @@ for p in predictors:
 	plt.hist(df[p], bins=5)
 	plt.title("Preditor {}".format(p))
 	plt.grid(b=True)
-	fig.savefig("{}hist_{}.png".format(figpath, p))
+	fig.savefig("{}hist_p-{}.png".format(figpath, p))
 	plt.close(fig)
 
 	mean = df[p].mean()
@@ -47,8 +50,9 @@ for p in predictors:
 	skewness = df[p].skew()
 
 	new_entry = pd.DataFrame([[p, mean, std, skewness]], columns=columns)
-	monovariate = analyzers.append(new_entry)
+	monovariate = monovariate.append(new_entry)
 
-
-# debuf
+# salva resultados em arquivo
 monovariate.to_csv(resfile, index=False)
+
+
