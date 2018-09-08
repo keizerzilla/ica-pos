@@ -13,7 +13,6 @@ seaborn.set()
 dataset = "datasets/glass.dat"
 heatmap_file = "figures/item3/correlation_heatmap.png"
 pairplot_file = "figures/item3/scatter_matrix.png"
-result_file = "results/item3.dat"
 
 # carregando dados e limpando coluna id (dencessaria)
 df = pd.read_csv(dataset)
@@ -26,8 +25,6 @@ annot = corr.round(decimals=1)
 seaborn.heatmap(corr, vmin=-1.0, vmax=1.0, linewidths=0.4, cmap="Purples", annot=annot)
 plt.title("Correlação entre preditores")
 plt.savefig(heatmap_file)
-plt.show()
-exit()
 
 # pairplot
 g = seaborn.PairGrid(df, hue="class")
@@ -38,6 +35,5 @@ labels = g._legend_data.keys()
 g.fig.legend(handles=handles, labels=labels, loc='upper center', ncol=len(classes))
 g.fig.subplots_adjust(top=0.98, bottom=0.02)
 g.savefig(pairplot_file)
-plt.show()
 
 
