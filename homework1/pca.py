@@ -1,6 +1,0 @@
-#X = np.array(df.drop(["class"], axis=1))
-#X = scale(X, axis=1)
-#pca = PCA()
-#pca.fit(X)
-#print(pca.explained_variance_ratio_)
-#print(np.sum(pca.explained_variance_ratio_))
