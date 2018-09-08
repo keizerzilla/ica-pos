@@ -24,7 +24,7 @@ corr = df.drop(["class"], axis=1).corr()
 annot = corr.round(decimals=1)
 seaborn.heatmap(corr, vmin=-1.0, vmax=1.0, linewidths=0.4, cmap="Purples", annot=annot)
 plt.title("Correlação entre preditores")
-plt.savefig(heatmap_file)
+plt.savefig(heatmap_file, bbox_inches="tight")
 
 # pairplot
 g = seaborn.PairGrid(df, hue="class")
@@ -34,6 +34,6 @@ handles = g._legend_data.values()
 labels = g._legend_data.keys()
 g.fig.legend(handles=handles, labels=labels, loc='upper center', ncol=len(classes))
 g.fig.subplots_adjust(top=0.98, bottom=0.02)
-g.savefig(pairplot_file)
+g.savefig(pairplot_file, bbox_inches="tight")
 
 

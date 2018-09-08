@@ -1,7 +1,8 @@
 class,num_samples
-1_building_windows_float_processed,70
-2_building_windows_non_float_processed,76
-3_vehicle_windows_float_processed,17
-5_containers,13
-6_tableware,9
-7_headlamps,29
+class1,70
+class2,76
+class3,17
+class5,13
+class6,9
+class7,29
+class4,0

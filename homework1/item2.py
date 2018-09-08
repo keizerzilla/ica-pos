@@ -1,6 +1,6 @@
-import seaborn
 import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn
 
 """
 Item #02: Análise monovariada por classe dos preditores
@@ -48,7 +48,7 @@ for c in classes:
 		plt.hist(col[p], bins=5)
 		plt.title("classe {} - preditor {}".format(c, p))
 		plt.grid(b=True)
-		fig.savefig("{}hist_class-{}_p-{}.png".format(figpath, c, p))
+		fig.savefig("{}hist_class-{}_p-{}.png".format(figpath, c, p), bbox_inches="tight")
 		plt.close(fig)
 
 		mean = col[p].mean()
@@ -60,9 +60,19 @@ for c in classes:
 		monoclass = monoclass.append(new_entry)
 		
 		print("Análise do preditor {} da classe {} OK".format(p, c))
-	
+
+new_entry = pd.DataFrame([["class4", 0]], columns=countsamples_header)
+countsamples = countsamples.append(new_entry)
+
 # salva resultados em arquivo
 monoclass.to_csv(result_file, index=False)
 countsamples.to_csv(samplecount_file, index=False)
+
+# cria barplot com numero de amostras
+ax = countsamples.plot.bar(x="class", y="num_samples", legend=False)
+ax.set_title("Número de amostras por classe de vidro")
+ax.set_xlabel("Classes")
+ax.set_ylabel("Amostras")
+plt.savefig(figpath+"barplot_numsamples.png", bbox_inches="tight")
 
 

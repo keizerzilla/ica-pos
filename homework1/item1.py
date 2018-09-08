@@ -1,6 +1,6 @@
-import seaborn
 import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn
 
 """
 Item #01: Análise monovariada global dos preditores
@@ -35,7 +35,7 @@ for p in predictors:
 	plt.hist(df[p], bins=5)
 	plt.title("Análise monovariada: preditor {}".format(p))
 	plt.grid(b=True)
-	fig.savefig("{}hist_p-{}.png".format(figpath, p))
+	fig.savefig("{}hist_p-{}.png".format(figpath, p), bbox_inches="tight")
 	plt.close(fig)
 
 	mean = df[p].mean()
