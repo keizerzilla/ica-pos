@@ -38,10 +38,10 @@ for p in predictors:
 	fig.savefig("{}hist_p-{}.png".format(figpath, p), bbox_inches="tight")
 	plt.close(fig)
 
-	mean = df[p].mean()
-	std = df[p].std()
-	var = df[p].var()
-	skewness = df[p].skew()
+	mean = round(df[p].mean(), 4)
+	std = round(df[p].std(), 4)
+	var = round(df[p].var(), 4)
+	skewness = round(df[p].skew(), 4)
 
 	new_entry = pd.DataFrame([[p, mean, std, var, skewness]], columns=columns)
 	monovariate = monovariate.append(new_entry)

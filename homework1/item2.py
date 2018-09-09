@@ -51,10 +51,10 @@ for c in classes:
 		fig.savefig("{}hist_class-{}_p-{}.png".format(figpath, c, p), bbox_inches="tight")
 		plt.close(fig)
 
-		mean = col[p].mean()
-		std = col[p].std()
-		var = col[p].var()
-		skewness = col[p].skew()
+		mean = round(col[p].mean(), 4)
+		std = round(col[p].std(), 4)
+		var = round(col[p].var(), 4)
+		skewness = round(col[p].skew(), 4)
 
 		new_entry = pd.DataFrame([[c, p, mean, std, var, skewness]], columns=monoclass_header)
 		monoclass = monoclass.append(new_entry)
