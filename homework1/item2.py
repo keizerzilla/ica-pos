@@ -32,11 +32,22 @@ predictors = list(df.drop(["class"], axis=1))
 # - assimetria
 monoclass_header = ["class", "predictor", "mean", "std", "var", "skewness"]
 countsamples_header = ["class", "num_samples"]
-
 monoclass = pd.DataFrame(columns=monoclass_header)
 countsamples = pd.DataFrame(columns=countsamples_header)
-
 classes = df["class"].unique()
+
+f, axes = plt.subplots(3, 2, sharex="col", sharey="row", figsize=(10, 8))
+plt.subplots_adjust(wspace=0.5, hspace=0.5)
+for ix, c in enumerate(classes, start=1):
+	# boxplot
+	col = df.loc[df["class"] == c].drop(["class"], axis=1)
+	plt.subplot(3, 2, ix)
+	seaborn.boxplot(data=col)
+	plt.title("Classe {}".format(c))
+
+
+plt.savefig(figpath + "monovariada-por-classe.png")
+plt.clf()
 
 for c in classes:
 	col = df.loc[df["class"] == c]
@@ -50,7 +61,8 @@ for c in classes:
 		plt.grid(b=True)
 		fig.savefig("{}hist_class-{}_p-{}.png".format(figpath, c, p), bbox_inches="tight")
 		plt.close(fig)
-
+		
+		
 		mean = round(col[p].mean(), 4)
 		std = round(col[p].std(), 4)
 		var = round(col[p].var(), 4)
@@ -61,6 +73,7 @@ for c in classes:
 		
 		print("Análise do preditor {} da classe {} OK".format(p, c))
 
+# coloca zero em class4 para nao deixar de fora
 new_entry = pd.DataFrame([["class4", 0]], columns=countsamples_header)
 countsamples = countsamples.append(new_entry)
 
