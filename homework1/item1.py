@@ -26,7 +26,7 @@ predictors = list(df.drop(["class"], axis=1))
 # analise monovariada
 # - histograma
 # - media
-# - desvio padrao
+# - variancia
 # - assimetria
 columns = ["predictor", "mean", "std", "var", "skewness"]
 monovariate = pd.DataFrame(columns=columns)

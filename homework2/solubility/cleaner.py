@@ -14,6 +14,7 @@ inputs = ["solTestX.txt",
           "solTrainXtrans.txt"]
 
 for input in inputs:
+	input = "original/"+input
 	output = "clean/"+input
 	with open(input, "r") as infile:
 		lines = infile.readlines()
@@ -32,6 +33,7 @@ inputs = ["solTestY.txt",
           "solTrainY.txt"]
 
 for input in inputs:
+	input = "original/"+input
 	output = "clean/"+input
 	with open(input, "r") as infile:
 		lines = infile.readlines()
