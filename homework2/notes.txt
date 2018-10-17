@@ -1,0 +1,3 @@
+- dataset estah bem sujo e desorganizado. um script python foi criado para arrumar a formatacao dos arquivos
+- a tarefa pede um resampling usando k-fold. o script de formatacao tambem criarah um dataset completo (merge de test e train). o resultado da concatencao tem 1267 amostras, como era esperado
+- 
