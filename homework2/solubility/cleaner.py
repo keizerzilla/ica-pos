@@ -14,8 +14,8 @@ inputs = ["solTestX.txt",
           "solTrainXtrans.txt"]
 
 for input in inputs:
-	input = "original/"+input
 	output = "clean/"+input
+	input = "original/"+input
 	with open(input, "r") as infile:
 		lines = infile.readlines()
 		with open(output, "w") as outfile:
@@ -33,17 +33,17 @@ inputs = ["solTestY.txt",
           "solTrainY.txt"]
 
 for input in inputs:
-	input = "original/"+input
 	output = "clean/"+input
+	input = "original/"+input
 	with open(input, "r") as infile:
 		lines = infile.readlines()
 		with open(output, "w") as outfile:
-			header = "x,y\n"
+			header = "y\n"
 			outfile.write(header)
 			for i in range(1, len(lines)):
 				newline = lines[i].replace("\t", ",")
 				newline = re.sub("\"\d+\",", "", newline)
-				outfile.write("{},{}".format(i,newline))
+				outfile.write(newline)
 	print(output + " ok!")
 
 print("CRIANDO MERGE DOS DATASETS")
@@ -53,6 +53,17 @@ df2 = pd.read_csv("clean/solTrainX.txt")
 frames = [df1, df2]
 result = pd.concat(frames)
 result.to_csv("clean/solX.txt", index=False)
+
+df3 = pd.read_csv("clean/solTestY.txt")
+df4 = pd.read_csv("clean/solTrainY.txt")
+frames = [df3, df4]
+result = pd.concat(frames)
+result.to_csv("clean/solY.txt", index=False)
+
+df5 = pd.read_csv("clean/solX.txt")
+df6 = pd.read_csv("clean/solY.txt")
+df5["y"] = df6
+df5.to_csv("clean/sol.txt", index=False)
 
 print("Pronto!")
 

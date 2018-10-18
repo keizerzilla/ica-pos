@@ -1,5 +1,8 @@
+GERAL
+- pode por apenas 3 casas decimais nos valores das tabelas
+- adicionar teoria na parte de metodologia para melhor entendimento do leitor
+
 - dataset estah bem sujo e desorganizado. um script python foi criado para arrumar a formatacao dos arquivos
 - a tarefa pede um resampling usando k-fold. o script de formatacao tambem criarah um dataset completo (merge de test e train). o resultado da concatencao tem 1267 amostras, como era esperado
 - para a tarefa #0, usaremos o conjunto de dados completo e concatenado
-- o histograma dos preditores quantitativos mostra que todos sofrem de forte assimetria negativa. Uma tranformacao usando box-cox foi afetuada para melhorar a distribuicao
-- 
+- o histograma dos preditores quantitativos mostra que todos sofrem de forte assimetria negativa. Uma tranformacao usando Yeo-Johnson foi afetuada para melhorar a distribuicao
