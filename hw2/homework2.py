@@ -134,7 +134,7 @@ def heatmap(df, title):
 	data = df.copy()
 	data = data.filter(regex="^(?!FP\d+)", axis=1)
 	
-	corr = data.corr().abs()
+	corr = data.corr()
 	annot = corr.round(decimals=2)
 	upper = corr.where(np.triu(np.ones(corr.shape), k=1).astype(np.bool))
 	to_drop = [col for col in upper.columns if any(upper[col] >= 0.9)]
@@ -142,8 +142,14 @@ def heatmap(df, title):
 	print("drops sugeridos: " + str(to_drop))
 	print("super correlacoes: " + str(super_corr))
 	
-	seaborn.set()
-	seaborn.heatmap(corr, vmin=0, vmax=1.0, cmap="Purples", annot=annot)
+	hm =seaborn.heatmap(corr, vmin=-1.0, vmax=1.0, cmap="Purples", annot=annot)
+	
+	for item in hm.get_xticklabels():
+		item.set_rotation(45)
+	
+	for item in hm.get_yticklabels():
+		item.set_rotation(360)
+	
 	plt.title(title)
 	plt.show()
 
@@ -176,8 +182,8 @@ if __name__ == "__main__":
 	df = pd.read_csv("data/solX.txt")
 	df = transf_boxcox(df, "data/solBoxCox.txt")
 	#histogram(df, "Distribuição dos preditores pós transformação Box-Cox")
-	#heatmap(df, "Matriz de correlção (mapa de calor) dos preditores")
-	islinear(df, pd.read_csv("data/solY.txt"), "Relações preditorXsaída")
+	heatmap(df, "Correlção entre os preditores transformados")
+	#islinear(df, pd.read_csv("data/solY.txt"), "Relações preditorXsaída")
 	
 	
 	
