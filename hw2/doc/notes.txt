@@ -1,0 +1,21 @@
+GERAL
+- pode por apenas 3 casas decimais nos valores das tabelas
+- adicionar teoria na parte de metodologia para melhor entendimento do leitor
+
+DUVIDAS
+- o fator que eu uso pra normalizar os dados antes do box-cox precisa ser somado ao resultado final tambem?
+
+NOTAS
+- dataset estah bem sujo e desorganizado. um script python foi criado para arrumar a formatacao dos arquivos
+- a tarefa pede um resampling usando k-fold. o script de formatacao tambem criarah um dataset completo (merge de test e train). o resultado da concatencao tem 1267 amostras, como era esperado
+- para a tarefa #0, usaremos o conjunto de dados completo e concatenado
+- os preditores usados daqui por diante sao os quantitativos
+- o histograma dos preditores quantitativos mostra que todos sofrem de forte assimetria negativa. Uma tranformacao usando Yeo-Johnson foi afetuada para melhorar a distribuicao
+- a transformacao de yeo-johnson se mostrou diferente do padrao jah transformado pelo livro
+- a transformacao box-cox foi usada no lugar. Para burlar os valores negativos e zero, foi adiciona 1 a cada valor dos preditores afim de torna-los estritamente positivos
+- o resultado entre as transf yeo-johnson e box-cox sao interessantes e serviram para avaliar o resultado da regressao
+- a matriz de correlacao mapa de calor mostra os valores absolutos para melhor visualizao (correlacoes negativas se tornam, apenas visualmente, correlacoes positivas)
+- fazendo uma filtragem de correlacoes absolutas maiores que 0.9, encontramos os seguintes descritores: 'NumBonds', 'NumNonHBonds', 'NumAromaticBonds', 'NumCarbon', 'SurfaceArea2'
+- os seguintes preditores possuem correlacao absoluta muito proxima de 1 (0.98 de aproximacao): 'NumBonds', 'NumNonHBonds'
+- mostrar que linear-inout traz algumas relacoes lineares, outras nao
+- 
