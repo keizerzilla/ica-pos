@@ -12,6 +12,7 @@ import seaborn
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from sklearn import linear_model
 from scipy.stats import linregress
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import PowerTransformer
@@ -180,24 +181,26 @@ def islinear(df_in, df_out, title):
 	plt.subplots_adjust(hspace=0.8, wspace=0.2)
 	plt.show()
 
-def ordinary_linear_regression(df_in, df_out):
-	X = np.array(df_in)
-	pca = PCA()
-	pca.fit(X)
-	evar = pca.explained_variance_ratio_
-	plt.plot(evar)
-	plt.show()
+def ordinary_linear_regression(X_tr, y_tr, X_tst, y_tst):
+	lm = linear_model.LinearRegression()
+	model = lm.fit(X_tr, y_tr)
+	r2 = lm.score(X_tst, y_tst)
+	
+	return r2
 
 
 if __name__ == "__main__":
-	df = pd.read_csv("data/solX.txt")
-	df_in = transf_boxcox(df, "data/solBoxCox.txt")
-	df_out = pd.read_csv("data/solY.txt")
-	#histogram(df_in, "Distribuição dos preditores pós transformação Box-Cox")
-	#heatmap(df, "Correlção entre os preditores transformados")
-	#islinear(df, pd.read_csv("data/solY.txt"), "Relações preditorXsaída")
-	ordinary_linear_regression(df_in, df_out)
+	#df = pd.read_csv("data/solX.txt")
+	#df_in = transf_boxcox(df, "data/solBoxCox.txt")
+	#df_out = pd.read_csv("data/solY.txt")
 	
+	X_tr = pd.read_csv("data/solTrainXtrans.txt").filter(regex="^(?!FP\d+)", axis=1)
+	y_tr = pd.read_csv("data/solTrainY.txt")
+	X_tst = pd.read_csv("data/solTestXtrans.txt").filter(regex="^(?!FP\d+)", axis=1)
+	y_tst = pd.read_csv("data/solTestY.txt")
+	
+	r2 = ordinary_linear_regression(X_tr, y_tr, X_tst, y_tst)
+	print(round(r2, 2))
 	
 	
 	

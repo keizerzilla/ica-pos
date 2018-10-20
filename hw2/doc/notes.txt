@@ -2,11 +2,9 @@ GERAL
 - pode por apenas 3 casas decimais nos valores das tabelas
 - adicionar teoria na parte de metodologia para melhor entendimento do leitor
 
-DUVIDAS
-- o fator que eu uso pra normalizar os dados antes do box-cox precisa ser somado ao resultado final tambem?
-
 NOTAS
 - dataset estah bem sujo e desorganizado. um script python foi criado para arrumar a formatacao dos arquivos
+- o dataset jah proveh um conjunto pre-processado e dividido para treino e teste. Ele serah usado como benchmark para avaliar o pre-processamento e divisao propostas nesse trabalho
 - a tarefa pede um resampling usando k-fold. o script de formatacao tambem criarah um dataset completo (merge de test e train). o resultado da concatencao tem 1267 amostras, como era esperado
 - para a tarefa #0, usaremos o conjunto de dados completo e concatenado
 - os preditores usados daqui por diante sao os quantitativos
@@ -18,4 +16,8 @@ NOTAS
 - fazendo uma filtragem de correlacoes absolutas maiores que 0.9, encontramos os seguintes descritores: 'NumBonds', 'NumNonHBonds', 'NumAromaticBonds', 'NumCarbon', 'SurfaceArea2'
 - os seguintes preditores possuem correlacao absoluta muito proxima de 1 (0.98 de aproximacao): 'NumBonds', 'NumNonHBonds'
 - mostrar que linear-inout traz algumas relacoes lineares, outras nao
+- "O objetivo da regressão linear é prever m e b a partir dos dados observados. A relação entra-saída nunca será perfeitamente linear; o erro (ou resíduo) da predição pode ser medido através do erro médio quadrático."
+- "Regressão linear múltipla tenta modelar o relacionamento entre duas ou mais variáveis descritivas e uma variável de saída a partir do ajuste de uma equação linear nos dados observados."
+- quando chamamos lm.score(X,y), estamos calculando o R^2 score
+- a classe linear_model.LinearRegression() do pacote scikit-learn implementa a regressão linear, tanto simples quanto múltipla, usando o método dos mínimos quadrados
 - 
