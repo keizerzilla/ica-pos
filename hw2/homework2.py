@@ -1,6 +1,7 @@
 """
 REFERENCIAS
 -----------
+
 01- http://bagrow.info/dsv/LEC10_notes_2014-02-13.html
 
 """
@@ -12,6 +13,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.stats import linregress
+from sklearn.decomposition import PCA
 from sklearn.preprocessing import PowerTransformer
 
 def clean_data():
@@ -142,7 +144,7 @@ def heatmap(df, title):
 	print("drops sugeridos: " + str(to_drop))
 	print("super correlacoes: " + str(super_corr))
 	
-	hm =seaborn.heatmap(corr, vmin=-1.0, vmax=1.0, cmap="Purples", annot=annot)
+	hm = seaborn.heatmap(corr, vmin=-1.0, vmax=1.0, cmap="Purples", annot=annot)
 	
 	for item in hm.get_xticklabels():
 		item.set_rotation(45)
@@ -178,12 +180,33 @@ def islinear(df_in, df_out, title):
 	plt.subplots_adjust(hspace=0.8, wspace=0.2)
 	plt.show()
 
+def ordinary_linear_regression(df_in, df_out):
+	X = np.array(df_in)
+	pca = PCA()
+	pca.fit(X)
+	evar = pca.explained_variance_ratio_
+	plt.plot(evar)
+	plt.show()
+
+
 if __name__ == "__main__":
 	df = pd.read_csv("data/solX.txt")
-	df = transf_boxcox(df, "data/solBoxCox.txt")
-	#histogram(df, "Distribuição dos preditores pós transformação Box-Cox")
-	heatmap(df, "Correlção entre os preditores transformados")
+	df_in = transf_boxcox(df, "data/solBoxCox.txt")
+	df_out = pd.read_csv("data/solY.txt")
+	#histogram(df_in, "Distribuição dos preditores pós transformação Box-Cox")
+	#heatmap(df, "Correlção entre os preditores transformados")
 	#islinear(df, pd.read_csv("data/solY.txt"), "Relações preditorXsaída")
+	ordinary_linear_regression(df_in, df_out)
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
