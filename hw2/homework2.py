@@ -8,14 +8,17 @@ REFERENCIAS
 
 import os
 import re
+import math
 import seaborn
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from sklearn import metrics
 from sklearn import linear_model
 from scipy.stats import linregress
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import PowerTransformer
+from sklearn.model_selection import KFold, train_test_split
 
 def clean_data():
 	try:
@@ -88,12 +91,12 @@ def transf_yeojohnson(df, output):
 	yeojohnson.to_csv(output, index=False)
 	return yeojohnson
 
-def transf_boxcox(df, output):
+def transf_boxcox(df, bonus, output):
 	boxcox = df.copy()
 	predictors = list(df.filter(regex="^(?!FP\d+)", axis=1))
 	for p in predictors:
 		pt = PowerTransformer(method="box-cox", standardize=False)
-		data = np.array(df[p] + 1).reshape(-1, 1)
+		data = np.array(df[p] + bonus).reshape(-1, 1)
 		pt.fit(data)
 		ans = np.ravel(pt.transform(data))
 		boxcox[p] = pd.Series(ans)
@@ -183,24 +186,126 @@ def islinear(df_in, df_out, title):
 
 def ordinary_linear_regression(X_tr, y_tr, X_tst, y_tst):
 	lm = linear_model.LinearRegression()
-	model = lm.fit(X_tr, y_tr)
+	lm.fit(X_tr, y_tr)
+	y_pred = lm.predict(X_tst)
+	rmse = math.sqrt(metrics.mean_squared_error(y_tst, y_pred))
 	r2 = lm.score(X_tst, y_tst)
 	
-	return r2
+	return (rmse, r2)
 
+def ridge_regression(X_tr, y_tr, X_tst, y_tst, alpha):
+	lm = linear_model.Ridge(alpha=alpha)
+	lm.fit(X_tr, y_tr)
+	y_pred = lm.predict(X_tst)
+	rmse = math.sqrt(metrics.mean_squared_error(y_tst, y_pred))
+	r2 = lm.score(X_tst, y_tst)
+	coef = lm.coef_
+	
+	return (rmse, r2, coef)
+
+def kfold_ordinary_linear_regression(X, y, k):
+	rmse_l = []
+	r2_l = []
+	
+	kf = KFold(n_splits=k, shuffle=True)
+	i = 1
+	for train_index, test_index in kf.split(X):
+		X_tr, X_tst = X[train_index], X[test_index]
+		y_tr, y_tst = y[train_index], y[test_index]
+		
+		rmse, r2 = ordinary_linear_regression(X_tr, y_tr, X_tst, y_tst)
+		rmse_l.append(rmse)
+		r2_l.append(r2)
+		
+		print("[{}] RMSE: {}, R2: {}".format(i, round(rmse, 2), round(r2, 2)))
+		i = i + 1
+	
+	return (rmse_l, r2_l)
+
+def tunned_ridge_regression(X, y, pred):
+	alphas = []
+	coefs = pd.DataFrame(columns=pred)
+	acc_cols = ["RMSE", "R2"]
+	acc = pd.DataFrame(columns=acc_cols)
+	
+	X_tr, X_tst, y_tr, y_tst = train_test_split(X, y, test_size=0.3)
+	
+	for alpha in np.linspace(0.0000000000001, 1):
+		rmse, r2, coef = ridge_regression(X_tr, y_tr, X_tst, y_tst, alpha)
+		alphas.append(alpha)
+		
+		newcoef = pd.DataFrame(coef.reshape(1,-1), columns=pred)
+		coefs = coefs.append(newcoef)
+		newacc = pd.DataFrame([[rmse, r2]], columns=acc_cols)
+		acc = acc.append(newacc)
+	
+	return (acc, alphas, coefs)
+
+def avg(l):
+	return sum(l) / len(l)
 
 if __name__ == "__main__":
-	#df = pd.read_csv("data/solX.txt")
-	#df_in = transf_boxcox(df, "data/solBoxCox.txt")
-	#df_out = pd.read_csv("data/solY.txt")
-	
-	X_tr = pd.read_csv("data/solTrainXtrans.txt").filter(regex="^(?!FP\d+)", axis=1)
+	# dados da divisao original do R
+	X_tr = pd.read_csv("data/solTrainXtrans.txt")
 	y_tr = pd.read_csv("data/solTrainY.txt")
-	X_tst = pd.read_csv("data/solTestXtrans.txt").filter(regex="^(?!FP\d+)", axis=1)
+	X_tst = pd.read_csv("data/solTestXtrans.txt")
 	y_tst = pd.read_csv("data/solTestY.txt")
+	X_tr = X_tr.filter(regex="^(?!FP\d+)", axis=1)
+	X_tst = X_tst.filter(regex="^(?!FP\d+)", axis=1)
+	rmse, r2 = ordinary_linear_regression(X_tr, y_tr, X_tst, y_tst)
+	print("[-] RMSE: {}, R2: {}".format(round(rmse, 2), round(r2, 2)))
 	
-	r2 = ordinary_linear_regression(X_tr, y_tr, X_tst, y_tst)
-	print(round(r2, 2))
+	# dados para questoes 1 a 3
+	X = pd.read_csv("data/solBoxCox.txt").filter(regex="^(?!FP\d+)", axis=1)
+	pred = list(X)
+	y = pd.read_csv("data/solY.txt")
+	X = np.array(X)
+	y = np.ravel(y)
+	
+	# questao 1
+	rmse_l, r2_l = kfold_ordinary_linear_regression(X, y, 10)
+	print("RMSE_mean: {}, R2_mean: {}".format(avg(rmse_l), avg(r2_l)))
+	
+	# questao 2
+	acc, alphas, coefs = tunned_ridge_regression(X, y, pred)
+	print("RMSE_mean: {}, R2_mean: {}".format(acc["RMSE"].mean(), acc["R2"].mean()))
+	
+	"""
+	plt.plot(alphas, coefs)
+	plt.title("Evolução dos coeficientes da regressão rígida")
+	plt.xlabel("Lambda")
+	plt.ylabel("Coeficiente")
+	plt.legend(list(coefs), bbox_to_anchor=(1,0,0,1), loc="center left")
+	plt.grid()
+	plt.show()
+	"""
+	
+	"""
+	plt.scatter(alphas, acc["RMSE"])
+	plt.scatter(alphas, acc["R2"])
+	plt.legend(list(acc), loc="upper right")
+	plt.title("Precisão dos modelos em termos de RMSE e R²")
+	plt.xlabel("Lambda")
+	plt.ylabel("Precisão")
+	plt.grid()
+	plt.show()
+	"""
+	
+	# questao 3
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

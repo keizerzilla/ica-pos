@@ -20,4 +20,8 @@ NOTAS
 - "Regressão linear múltipla tenta modelar o relacionamento entre duas ou mais variáveis descritivas e uma variável de saída a partir do ajuste de uma equação linear nos dados observados."
 - quando chamamos lm.score(X,y), estamos calculando o R^2 score
 - a classe linear_model.LinearRegression() do pacote scikit-learn implementa a regressão linear, tanto simples quanto múltipla, usando o método dos mínimos quadrados
+- os valores de RMSE e R2 da divisao inicial batem com o livro-texto
+- explicar RMSE e R2 na parte de metodologia para ajudar na interpretacao
+- os resultados medios com kfold10 foram melhores que a transformacao-divisao original
+- a classe linear_model.Ridge() do pacote scikit-learn implementa a regressão linear rígida (com penalização no cálculo do erro quadrático)
 - 
