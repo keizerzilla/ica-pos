@@ -18,6 +18,7 @@ from sklearn import linear_model
 from scipy.stats import linregress
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import PowerTransformer
+from sklearn.cross_decomposition import PLSRegression
 from sklearn.model_selection import KFold, train_test_split
 
 def clean_data():
@@ -241,11 +242,31 @@ def tunned_ridge_regression(X, y, pred):
 	
 	return (acc, alphas, coefs)
 
+def pls_regression(X, y, k, components):
+	pls = PLSRegression(n_components=components)
+	rmse_l = []
+	r2_l = []
+	
+	kf = KFold(n_splits=k, shuffle=True)
+	for train_index, test_index in kf.split(X):
+		X_tr, X_tst = X[train_index], X[test_index]
+		y_tr, y_tst = y[train_index], y[test_index]
+		
+		pls.fit(X_tr, y_tr)
+		r2 = pls.score(X_tst, y_tst)
+		y_pred = pls.predict(X_tst)
+		rmse = math.sqrt(metrics.mean_squared_error(y_tst, y_pred))
+		rmse_l.append(rmse)
+		r2_l.append(r2)
+	
+	return (rmse_l, r2_l)
+
 def avg(l):
 	return sum(l) / len(l)
 
 if __name__ == "__main__":
 	# dados da divisao original do R
+	print("QUESTAO 00")
 	X_tr = pd.read_csv("data/solTrainXtrans.txt")
 	y_tr = pd.read_csv("data/solTrainY.txt")
 	X_tst = pd.read_csv("data/solTestXtrans.txt")
@@ -263,12 +284,15 @@ if __name__ == "__main__":
 	y = np.ravel(y)
 	
 	# questao 1
+	print("QUESTAO 01")
 	rmse_l, r2_l = kfold_ordinary_linear_regression(X, y, 10)
 	print("RMSE_mean: {}, R2_mean: {}".format(avg(rmse_l), avg(r2_l)))
 	
 	# questao 2
+	print("QUESTAO 02")
 	acc, alphas, coefs = tunned_ridge_regression(X, y, pred)
 	print("RMSE_mean: {}, R2_mean: {}".format(acc["RMSE"].mean(), acc["R2"].mean()))
+	print(acc)
 	
 	"""
 	plt.plot(alphas, coefs)
@@ -292,7 +316,9 @@ if __name__ == "__main__":
 	"""
 	
 	# questao 3
-	
+	print("QUESTAO 03")
+	rmse_l, r2_l = pls_regression(X, y, 10, 2)
+	print("RMSE_mean: {}, R2_mean: {}".format(avg(rmse_l), avg(r2_l)))
 	
 	
 	
