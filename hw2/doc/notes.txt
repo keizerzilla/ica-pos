@@ -3,26 +3,26 @@ GERAL
 - adicionar teoria na parte de metodologia para melhor entendimento do leitor
 
 NOTAS
-- dataset estah bem sujo e desorganizado. um script python foi criado para arrumar a formatacao dos arquivos
-- o dataset jah proveh um conjunto pre-processado e dividido para treino e teste. Ele serah usado como benchmark para avaliar o pre-processamento e divisao propostas nesse trabalho
-- a tarefa pede um resampling usando k-fold. o script de formatacao tambem criarah um dataset completo (merge de test e train). o resultado da concatencao tem 1267 amostras, como era esperado
-- para a tarefa #0, usaremos o conjunto de dados completo e concatenado
-- os preditores usados daqui por diante sao os quantitativos
-- o histograma dos preditores quantitativos mostra que todos sofrem de forte assimetria negativa. Uma tranformacao usando Yeo-Johnson foi afetuada para melhorar a distribuicao
-- a transformacao de yeo-johnson se mostrou diferente do padrao jah transformado pelo livro
-- a transformacao box-cox foi usada no lugar. Para burlar os valores negativos e zero, foi adiciona 1 a cada valor dos preditores afim de torna-los estritamente positivos
-- o resultado entre as transf yeo-johnson e box-cox sao interessantes e serviram para avaliar o resultado da regressao
-- a matriz de correlacao mapa de calor mostra os valores absolutos para melhor visualizao (correlacoes negativas se tornam, apenas visualmente, correlacoes positivas)
-- fazendo uma filtragem de correlacoes absolutas maiores que 0.9, encontramos os seguintes descritores: 'NumBonds', 'NumNonHBonds', 'NumAromaticBonds', 'NumCarbon', 'SurfaceArea2'
-- os seguintes preditores possuem correlacao absoluta muito proxima de 1 (0.98 de aproximacao): 'NumBonds', 'NumNonHBonds'
-- mostrar que linear-inout traz algumas relacoes lineares, outras nao
-- "O objetivo da regressão linear é prever m e b a partir dos dados observados. A relação entra-saída nunca será perfeitamente linear; o erro (ou resíduo) da predição pode ser medido através do erro médio quadrático."
-- "Regressão linear múltipla tenta modelar o relacionamento entre duas ou mais variáveis descritivas e uma variável de saída a partir do ajuste de uma equação linear nos dados observados."
-- quando chamamos lm.score(X,y), estamos calculando o R^2 score
-- a classe linear_model.LinearRegression() do pacote scikit-learn implementa a regressão linear, tanto simples quanto múltipla, usando o método dos mínimos quadrados
-- os valores de RMSE e R2 da divisao inicial batem com o livro-texto
-- explicar RMSE e R2 na parte de metodologia para ajudar na interpretacao
-- os resultados medios com kfold10 foram melhores que a transformacao-divisao original
-- a classe linear_model.Ridge() do pacote scikit-learn implementa a regressão linear rígida (com penalização no cálculo do erro quadrático)
-- grafico de RMSE e R2 na regressao rigida vai economizar muito sem precisar usar uma tabela feia
-- 
+OK - dataset estah bem sujo e desorganizado. um script python foi criado para arrumar a formatacao dos arquivos
+OK - o dataset jah proveh um conjunto pre-processado e dividido para treino e teste. Ele serah usado como benchmark para avaliar o pre-processamento e divisao propostas nesse trabalho
+OK - a tarefa pede um resampling usando k-fold. o script de formatacao tambem criarah um dataset completo (merge de test e train). o resultado da concatencao tem 1267 amostras, como era esperado
+OK - para a tarefa #0, usaremos o conjunto de dados completo e concatenado
+OK - os preditores usados daqui por diante sao os quantitativos
+OK - o histograma dos preditores quantitativos mostra que todos sofrem de forte assimetria negativa. Uma tranformacao usando Yeo-Johnson foi afetuada para melhorar a distribuicao
+OK - a transformacao de yeo-johnson se mostrou diferente do padrao jah transformado pelo livro
+OK - a transformacao box-cox foi usada no lugar. Para burlar os valores negativos e zero, foi adiciona 1 a cada valor dos preditores afim de torna-los estritamente positivos
+OK - o resultado entre as transf yeo-johnson e box-cox sao interessantes e serviram para avaliar o resultado da regressao
+OK - a matriz de correlacao mapa de calor mostra os valores absolutos para melhor visualizao (correlacoes negativas se tornam, apenas visualmente, correlacoes positivas)
+OK - fazendo uma filtragem de correlacoes absolutas maiores que 0.9, encontramos os seguintes descritores: 'NumBonds', 'NumNonHBonds', 'NumAromaticBonds', 'NumCarbon', 'SurfaceArea2'
+OK - os seguintes preditores possuem correlacao absoluta muito proxima de 1 (0.98 de aproximacao): 'NumBonds', 'NumNonHBonds'
+OK - mostrar que linear-inout traz algumas relacoes lineares, outras nao
+OK - "O objetivo da regressão linear é prever m e b a partir dos dados observados. A relação entrada-saída nunca será perfeitamente linear; o erro (ou resíduo) da predição pode ser medido através do erro médio quadrático."
+OK - "Regressão linear múltipla tenta modelar o relacionamento entre duas ou mais variáveis descritivas e uma variável de saída a partir do ajuste de uma equação linear nos dados observados."
+OK - quando chamamos lm.score(X,y), estamos calculando o R^2 score
+OK - a classe linear_model.LinearRegression() do pacote scikit-learn implementa a regressão linear, tanto simples quanto múltipla, usando o método dos mínimos quadrados
+OK - os valores de RMSE e R2 da divisao inicial batem com o livro-texto
+OK - explicar RMSE e R2 na parte de metodologia para ajudar na interpretacao
+OK - os resultados medios com kfold10 foram melhores que a transformacao-divisao original
+OK - a classe linear_model.Ridge() do pacote scikit-learn implementa a regressão linear rígida (com penalização no cálculo do erro quadrático)
+OK - grafico de RMSE e R2 na regressao rigida vai economizar muito sem precisar usar uma tabela feia
+
