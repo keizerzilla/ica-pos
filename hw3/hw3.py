@@ -19,7 +19,7 @@ from sklearn.naive_bayes import GaussianNB as CQG
 from sklearn.decomposition import PCA
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
 from sklearn.svm import SVC as SVM
-from sklearn.neural_network import MLPClassifier as MLP
+from sklearn.linear_model import Perceptron
 
 def reduction_pca(X, n):
 	pca = PCA(n_components=n)
@@ -73,13 +73,17 @@ def classify(classifiers, X_train, y_train, X_test, y_test, normalize=False):
 	return ans
 	
 def sumary(ans):
-	print("CLASSIF\t\tSCORE\tSENSI\tSPECIF")
+	row_size = 38
+	print("-"*row_size)
+	print("{:<16}{:<8}{:<8}{:<8}".format("CLASSIFIER", "SCORE", "SENS", "SPEC"))
+	print("-"*row_size)
 	for n in ans:
 		name = n
 		score = round(ans[n]["score"]*100, 2)
 		sens = round(ans[n]["sens"]*100, 2)
 		spec = round(ans[n]["spec"]*100, 2)
-		print("{}\t\t{}\t{}%\t{}%".format(name, score, sens, spec))
+		print("{:<16}{:<8}{:<8}{:<8}".format(name, score, sens, spec))
+	print("-"*row_size)
 
 def set_datasets():
 	training = pd.read_csv("data/training.csv")
@@ -93,21 +97,14 @@ def set_datasets():
 	df.to_csv("data/data_testing.csv", index=None)
 
 if __name__ == "__main__":
-	classifiers = {"KNN1"           : KNN(n_neighbors=1),
-				   "KNN2"           : KNN(n_neighbors=2),
-				   "KNN3"           : KNN(n_neighbors=3),
-				   "KNN4"           : KNN(n_neighbors=4),
-				   "KNN5"           : KNN(n_neighbors=5),
-				   "LDA"            : LDA(n_components=1),
-				   "SVMlinearAuto"  : SVM(kernel="linear", gamma="auto"),
-				   "SVMradialAuto"  : SVM(kernel="rbf", gamma="auto"),
-				   "SVMpolyAuto"    : SVM(kernel="poly", gamma="auto"),
-				   "SVMlinearScale" : SVM(kernel="linear", gamma="scale"),
-				   "SVMradialScale" : SVM(kernel="rbf", gamma="scale"),
-				   "SVMpolyScale"   : SVM(kernel="poly", gamma="scale"),
-	               "DMC"            : DMC(),
-	               "CQG"            : CQG(),
-	               "MLP"            : MLP()}
+	classifiers = {"KNN4"      : KNN(n_neighbors=4, metric="manhattan"),
+				   "LDA"       : LDA(n_components=1),
+				   #"SVMlinear" : SVM(kernel="linear", gamma="auto"),
+				   #"SVMradial" : SVM(kernel="rbf", gamma="auto"),
+				   #"SVMpoly"   : SVM(kernel="poly", gamma="auto"),
+	               "DMC"        : DMC(),
+	               "CQG"        : CQG(),
+	               "Perceptron" : Perceptron(max_iter=1000, tol=1e-3)}
 	
 	training = pd.read_csv("data/data_training.csv")
 	testing = pd.read_csv("data/data_testing.csv")
