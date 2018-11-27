@@ -15,6 +15,7 @@ import seaborn as sb
 import matplotlib.pyplot as plt
 from sklearn.svm import SVC as SVM
 from sklearn.metrics import confusion_matrix
+from sklearn.model_selection import GridSearchCV
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import PowerTransformer
 from sklearn.neural_network import MLPClassifier as MLP
@@ -139,6 +140,7 @@ if __name__ == "__main__":
 	# desabilita mensagens de warning
 	warnings.filterwarnings("ignore")
 	
+	"""
 	# classificadores lineares
 	linear = {"LDA" : LDA(solver="svd", n_components=1),
 	          "logit" : LogisticClassifier(solver="liblinear")}
@@ -148,10 +150,17 @@ if __name__ == "__main__":
 	             "QDA" : QDA(reg_param=1),
 	             "SVM_radial" : SVM(kernel="rbf", C=1.41),
 	             "KNN_manhattam" : KNN(metric="manhattan", n_neighbors=24)}
+	"""
+	
+	"""
+	# config massa antes do gridsearch
+	nonlinear = {"MLP_{}".format(round(a, 2)) : MLP(hidden_layer_sizes=(200,), solver="sgd", learning_rate="constant", max_iter=300, power_t=0.4, )
+	             for a in np.linspace(0.1, 1, 10)}
+	"""
 	
 	# carregando dados
-	training = pd.read_csv("data/data_training.csv")
-	testing = pd.read_csv("data/data_testing.csv")
+	training = pd.read_csv("data/training.csv")
+	testing = pd.read_csv("data/testing.csv")
 	X_train = training.drop(["Class"], axis=1)
 	y_train = training["Class"]
 	X_test = testing.drop(["Class"], axis=1)
@@ -166,11 +175,52 @@ if __name__ == "__main__":
 	X_train = X_train[predictors]
 	X_test = X_test[predictors]
 	
+	param_grid = [
+		{"hidden_layer_sizes" : [(h,) for h in range(100,310,10)],
+		 "activation" : ["identity", "logistic", "tanh", "relu"],
+		 "solver" : ["sgd"],
+		 "alpha" : [a for a in np.linspace(0.0001, 0.001, 10)],
+		 "learning_rate" : ["constant"],
+		 "learning_rate_init" : [l for l in np.linspace(0.001, 0.1, 10)],
+		 "power_t" : [p for p in np.linspace(0.1, 0.5, 5)],
+		 "max_iter" : [1000],
+		 "momentum" : [m for m in np.linspace(0, 1, 10)]
+		}
+	]
+	scores = ['precision', 'recall']
+	for score in scores:
+		print("# Tuning hyper-parameters for %s" % score)
+		print()
+		
+		clf = GridSearchCV(MLP(), param_grid, cv=5, scoring='%s_macro' % score)
+		clf.fit(X_train, y_train)
+		
+		print("Best parameters set found on development set:")
+		print()
+		print(clf.best_params_)
+		print()
+		print("Grid scores on development set:")
+		print()
+		means = clf.cv_results_['mean_test_score']
+		stds = clf.cv_results_['std_test_score']
+		for mean, std, params in zip(means, stds, clf.cv_results_['params']):
+			print("%0.3f (+/-%0.03f) for %r" % (mean, std * 2, params))
+		print()
+		
+		print("Detailed classification report:")
+		print()
+		print("The model is trained on the full development set.")
+		print("The scores are computed on the full evaluation set.")
+		print()
+		y_true, y_pred = y_test, clf.predict(X_test)
+		print(classification_report(y_true, y_pred))
+		print()
+	
 	# rodando classificadores
-	ans = classify(linear, X_train, y_train, X_test, y_test)
-	ans = classify(nonlinear, X_train, y_train, X_test, y_test)
+	#ans = classify(linear, X_train, y_train, X_test, y_test)
+	#ans = classify(nonlinear, X_train, y_train, X_test, y_test)
 	
 	# plotando alguns resultados dumb
-	fig = confmatrix(ans, "SVM_radial")
-	plt.show()
+	#fig = confmatrix(ans, "SVM_radial")
+	#plt.show()
 	
